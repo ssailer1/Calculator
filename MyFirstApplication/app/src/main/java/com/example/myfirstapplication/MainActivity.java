@@ -1,13 +1,17 @@
 package com.example.myfirstapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
 
 public class MainActivity extends AppCompatActivity {
     private EditText number1, number2;
@@ -19,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //setRadioButtonsActivated(false);
     }
 
     @Override
@@ -31,7 +36,12 @@ public class MainActivity extends AppCompatActivity {
         ms = findViewById(R.id.ms);
         mr = findViewById(R.id.mr);
         ausgabe = findViewById(R.id.ausgabe);
-        ausgabe.setText("hallo");
+        ausgabe.setText("");
+        ausgabe.setTextColor(0xFFFFFFFF);
+        ausgabe.setBackgroundColor(0xFF0000FF);
+
+        // Deaktiviere die RadioButtons zuerst
+
 
         calc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,11 +49,37 @@ public class MainActivity extends AppCompatActivity {
                 calculate();
             }
         });
+
+        ausgabe.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                setBack();
+                return true;
+            }
+        });
+
+        // Aktiviere die RadioButtons
+        //setRadioButtonsActivated(true);
     }
 
+    // Füge diese Methode hinzu
+    private void setRadioButtonsActivated(boolean activated) {
+        for (int i = 0; i < operation.getChildCount(); i++) {
+            View radioButton = operation.getChildAt(i);
+            radioButton.setEnabled(activated);
+        }
+    }
+
+    private void setBack(){
+        ausgabe.setText("0");
+        number1.setText("");
+        number2.setText("");
+    }
     private void calculate() {
 
         int a = getRadioNumber();
+        Color  b = new Color();
+
         double erg = 0;
         try {
             double n1 = Double.parseDouble(number1.getText().toString());
@@ -67,10 +103,9 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(e);
             ausgabe.setText("Error");
         }
-        ausgabe.setText(String.valueOf(erg);
-        if(erg>=0){
-
-        }
+        ausgabe.setText(String.valueOf(erg));
+        if(erg>=0){ ausgabe.setBackgroundColor(0xFF000000);}
+        else{ ausgabe.setBackgroundColor(0xFFFF0000);}
     }
     private int getRadioNumber(){
         int selectedId = operation.getCheckedRadioButtonId();

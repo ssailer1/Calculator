@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MyFirstApplication</string>
+    <string name="test">Dies is meine erste App</string>
+    <string name="btnc">"?"</string>
+    <string name="btnl">-1</string>
+    <string name="btnr">+1</string>
+    <string name="ueberschrift">Mein Erstes Programm</string>
+</resources>

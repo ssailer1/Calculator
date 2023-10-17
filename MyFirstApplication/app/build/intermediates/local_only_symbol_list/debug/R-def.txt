@@ -1,0 +1,37 @@
+R_DEF: Internal format may change without notice
+local
+color bg
+color black
+color darkb
+color greena
+color lightb
+color midb
+color midlightb
+color redw
+color white
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+id ausgabe
+id calc
+id divide
+id minus
+id mr
+id ms
+id multiply
+id number1
+id number2
+id operation
+id plus
+layout activity_main
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+string btnc
+string btnl
+string btnr
+string test
+string ueberschrift
+style Base.Theme.MyFirstApplication
+style Theme.MyFirstApplication
+xml backup_rules
+xml data_extraction_rules

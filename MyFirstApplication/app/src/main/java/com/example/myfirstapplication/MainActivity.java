@@ -3,8 +3,10 @@ package com.example.myfirstapplication;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +14,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -19,6 +22,11 @@ public class MainActivity extends AppCompatActivity {
     private RadioGroup operation;
     private Button calc, ms, mr;
     private TextView ausgabe;
+
+    private SharedPreferences sp;
+
+
+
 
 
 
@@ -28,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         operation = findViewById(R.id.operation);
         operation.setActivated(false);
+
     }
 
     @Override
@@ -43,8 +52,36 @@ public class MainActivity extends AppCompatActivity {
         ausgabe.setTextColor(0xFFFFFFFF);
         ausgabe.setBackgroundColor(0xFF0000FF);
 
+        operation.setActivated(true);
+        sp =  getSharedPreferences("Operation", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
 
+        ms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String save = String.valueOf(operation.getCheckedRadioButtonId());
+                editor.putString("selectedOperation", save);
+                editor.apply();
+                Toast.makeText(getApplicationContext(), "Erfolgreich gespeichert", Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        mr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String savedOp  = sp.getString("selectedOperation", "");
+                System.out.println("Test: "+savedOp);
+
+                if (!(savedOp.equals(""))) {
+                    for (int i = 0; i < operation.getChildCount(); i++) {
+                        RadioButton rb = (RadioButton) operation.getChildAt(i);
+                        if (String.valueOf(rb.getId()).equals(savedOp)) {
+                            operation.check(Integer.parseInt(savedOp));
+                        }
+                    }
+                }
+            }
+        });
 
         calc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +98,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        operation.setActivated(true);
+
+
+
     }
 
     // Füge diese Methode hinzu

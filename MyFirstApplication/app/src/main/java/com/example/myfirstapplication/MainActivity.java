@@ -16,8 +16,14 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+/**
+ * Main Klasse für den Android Calculator
+ * @author Sebastian Sailer
+ * @version 2023-10-17
+ */
 public class MainActivity extends AppCompatActivity {
+    /*----------------------------------------------------*/
+    // Attribute
     private EditText number1, number2;
     private RadioGroup operation;
     private Button calc, ms, mr;
@@ -28,20 +34,25 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
+    /*----------------------------------------------------*/
+    // Sobald die App erstellt wird soll ... ausgeführt werden
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         operation = findViewById(R.id.operation);
-        operation.setActivated(false);
+        operation.setActivated(false); //RadioButton deaktivieren
 
     }
 
+    /*----------------------------------------------------*/
+    // Sobald die App gestartet wird soll ... ausgeführt werden
     @Override
     protected void onStart() {
         super.onStart();
+
+        /*----------------------------------------------------*/
+        // Attributen werte geben / zuweisen
         number1 = findViewById(R.id.number1);
         number2 = findViewById(R.id.number2);
         calc = findViewById(R.id.calc);
@@ -52,10 +63,15 @@ public class MainActivity extends AppCompatActivity {
         ausgabe.setTextColor(0xFFFFFFFF);
         ausgabe.setBackgroundColor(0xFF0000FF);
 
-        operation.setActivated(true);
+        operation.setActivated(true); //RadioButton aktivieren
+
+        /*----------------------------------------------------*/
+        //Zwischenspeicher
         sp =  getSharedPreferences("Operation", MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
 
+        /*----------------------------------------------------*/
+        // Was passieren soll, wenn der ms Knopf gedrückt wird
         ms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Erfolgreich gespeichert", Toast.LENGTH_SHORT).show();
             }
         });
-
+        /*----------------------------------------------------*/
+        // Was passieren soll, wenn der mr Knopf gedrückt wird
         mr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,14 +99,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
+        /*----------------------------------------------------*/
+        // Was passieren soll, wenn der calc Knopf gedrückt wird
         calc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 calculate();
             }
         });
-
+        /*----------------------------------------------------*/
+        // Was passieren soll, wenn die Ausgabe berührt wird
         ausgabe.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -98,27 +117,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
     }
-
-    // Füge diese Methode hinzu
-    private void setRadioButtonsActivated(boolean activated) {
-        for (int i = 0; i < operation.getChildCount(); i++) {
-            View childView = operation.getChildAt(i);
-            if (childView instanceof RadioButton) {
-                RadioButton radioButton = (RadioButton) childView;
-                radioButton.setEnabled(activated);
-            }
-        }
-    }
-
+    /*----------------------------------------------------*/
+    // Werte zurücksetzen
     private void setBack(){
         ausgabe.setText("0");
         number1.setText("");
         number2.setText("");
     }
+
+    /*----------------------------------------------------*/
+    // Methode zum berechnen
     private void calculate() {
 
         int a = getRadioNumber();
@@ -151,6 +160,9 @@ public class MainActivity extends AppCompatActivity {
         if(erg>=0){ ausgabe.setBackgroundColor(0xFF000000);}
         else{ ausgabe.setBackgroundColor(0xFFFF0000);}
     }
+
+    /*----------------------------------------------------*/
+    // returned welcher Recheoperator verwendet werden soll
     private int getRadioNumber(){
         int selectedId = operation.getCheckedRadioButtonId();
 

@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -19,11 +20,14 @@ public class MainActivity extends AppCompatActivity {
     private Button calc, ms, mr;
     private TextView ausgabe;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //setRadioButtonsActivated(false);
+        operation = findViewById(R.id.operation);
+        operation.setActivated(false);
     }
 
     @Override
@@ -31,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         number1 = findViewById(R.id.number1);
         number2 = findViewById(R.id.number2);
-        operation = findViewById(R.id.operation);
         calc = findViewById(R.id.calc);
         ms = findViewById(R.id.ms);
         mr = findViewById(R.id.mr);
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         ausgabe.setTextColor(0xFFFFFFFF);
         ausgabe.setBackgroundColor(0xFF0000FF);
 
-        // Deaktiviere die RadioButtons zuerst
+
 
 
         calc.setOnClickListener(new View.OnClickListener() {
@@ -58,15 +61,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Aktiviere die RadioButtons
-        //setRadioButtonsActivated(true);
+        operation.setActivated(true);
     }
 
     // Füge diese Methode hinzu
     private void setRadioButtonsActivated(boolean activated) {
         for (int i = 0; i < operation.getChildCount(); i++) {
-            View radioButton = operation.getChildAt(i);
-            radioButton.setEnabled(activated);
+            View childView = operation.getChildAt(i);
+            if (childView instanceof RadioButton) {
+                RadioButton radioButton = (RadioButton) childView;
+                radioButton.setEnabled(activated);
+            }
         }
     }
 

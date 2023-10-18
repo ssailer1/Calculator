@@ -6,4 +6,5 @@
     </style>
 
     <style name="Theme.MyFirstApplication" parent="Base.Theme.MyFirstApplication" />
+
 </resources>

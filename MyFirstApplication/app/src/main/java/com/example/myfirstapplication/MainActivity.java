@@ -7,6 +7,9 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -30,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView ausgabe;
 
     private SharedPreferences sp;
-
-
 
 
     /*----------------------------------------------------*/
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         /*----------------------------------------------------*/
         //Zwischenspeicher
-        sp =  getSharedPreferences("Operation", MODE_PRIVATE);
+        sp = getSharedPreferences("Operation", MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
 
         /*----------------------------------------------------*/
@@ -86,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
         mr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String savedOp  = sp.getString("selectedOperation", "");
-                System.out.println("Test: "+savedOp);
+                String savedOp = sp.getString("selectedOperation", "");
+                System.out.println("Test: " + savedOp);
 
                 if (!(savedOp.equals(""))) {
                     for (int i = 0; i < operation.getChildCount(); i++) {
@@ -118,9 +119,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
     /*----------------------------------------------------*/
     // Werte zurücksetzen
-    private void setBack(){
+    private void setBack() {
         ausgabe.setText("0");
         number1.setText("");
         number2.setText("");
@@ -131,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
     private void calculate() {
 
         int a = getRadioNumber();
-        Color  b = new Color();
+        Color b = new Color();
 
         double erg = 0;
         try {
@@ -141,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
             switch (a) {
                 case (0):
-                    erg= n1 + n2;
+                    erg = n1 + n2;
                     break;
                 case (1):
                     erg = n1 - n2;
@@ -157,13 +159,16 @@ public class MainActivity extends AppCompatActivity {
             ausgabe.setText("Error");
         }
         ausgabe.setText(String.valueOf(erg));
-        if(erg>=0){ ausgabe.setBackgroundColor(0xFF000000);}
-        else{ ausgabe.setBackgroundColor(0xFFFF0000);}
+        if (erg >= 0) {
+            ausgabe.setBackgroundColor(0xFF000000);
+        } else {
+            ausgabe.setBackgroundColor(0xFFFF0000);
+        }
     }
 
     /*----------------------------------------------------*/
     // returned welcher Recheoperator verwendet werden soll
-    private int getRadioNumber(){
+    private int getRadioNumber() {
         int selectedId = operation.getCheckedRadioButtonId();
 
         if (selectedId == R.id.plus) {
@@ -179,6 +184,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection.
+        if (item.getItemId() == R.id.info) {
+            Toast toast = Toast.makeText(this, "Sailer Sebastian, @tgm, 2023/24", Toast.LENGTH_SHORT);
+            toast.show();
+            return true;
+        }
+        if (item.getItemId() == R.id.reset) {
+            setBack();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
